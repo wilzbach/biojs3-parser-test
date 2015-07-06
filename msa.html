@@ -1,0 +1,56 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="biojs-vis-msa">
+
+    <template>
+        <content></content>
+		<span id="text">[[text]]</span>
+    </template>
+
+    <script>
+        Polymer({
+            is: "biojs-vis-msa",
+            ready: function() {
+                var self = this;
+                this.async(function() {
+                    var p = this.querySelector("biojs-io-fasta");
+                    // TODO: check for multiple occurrences
+                    if (typeof p !== 'undefined' && p != null) {
+                        self.set("seqs", p.data);
+                        p.addEventListener("data-changed", function(content) {
+                            self.set("seqs", p.data);
+                        });
+                    }
+                });
+            },
+            _seqsChanged: function(changes) {
+                console.log(this.id + ": seqs changed: ", this.seqs);
+                if (this.seqs != undefined) {
+                    this.text = this.seqs.join(",");
+                }
+            },
+			_setOpts: function(colorscheme){
+				this.$.text.style.color = colorscheme;
+			},
+            observers: [
+                '_seqsChanged(seqs.splices)',
+				'_setOpts(colorscheme)'
+            ],
+            properties: {
+                seqs: {
+                    type: Array,
+                    notify: true,
+                    //                    observer: '_seqsChanged',
+                    value: function() {
+                        return [];
+                    }
+                },
+                colorscheme: {
+                    type: String,
+                    value: "black"
+                }
+            }
+        });
+    </script>
+
+</dom-module>

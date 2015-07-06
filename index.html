@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="msa.html">
+    <link rel="import" href="parser.html">
+</head>
+
+<body>
+
+    <!-- normal object binding -->
+    <template id="t1" is="dom-bind">
+        <biojs-vis-msa id="msa1" seqs="{{seqs}}">
+            <div> MSA 1</div>
+            <biojs-io-fasta url="./foo.fasta" />
+        </biojs-vis-msa>
+
+        <div>MSA 2 </div>
+		<biojs-vis-msa colorscheme="blue" id="msa2" seqs="{{seqs}}"></biojs-vis-msa>
+    </template>
+
+    <hr>
+
+    <!-- with promises and innerHTML -->
+    <template id="t2" is="dom-bind">
+		<biojs-vis-msa id="msa3" seqs="{{seqs}}"></biojs-vis-msa>
+		<br>
+        <biojs-vis-msa colorscheme="red" id="msa4" seqs="{{seqs}}"></biojs-vis-msa>
+
+        <biojs-io-fasta data={{seqs}}>
+        	some inner text
+        </biojs-io-fasta>
+    </template>
+
+</body>
+
+</html>

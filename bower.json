@@ -1,0 +1,19 @@
+{
+  "name": "biojs3-parser-test",
+  "version": "0.0.1",
+  "authors": [
+    "Greenify <greeenify@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~1.0.5",
+    "biojs-io-parser": "~1.0.2"
+  }
+}

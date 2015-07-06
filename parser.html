@@ -1,0 +1,75 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<script src="./bower_components/biojs-io-parser/dist/bio_io_parser.js">
+</script>
+<script>
+    var Parser = bio.io.Parser;
+    var parser = {
+        parse: function(data) {
+			console.log(data);
+			return data.split(" ");
+        }
+    };
+    Parser.mixin(parser);
+</script>
+
+<dom-module id="biojs-io-fasta">
+    <template>
+        <div style="display: none">
+            <content id="content"></content>
+        </div>
+    </template>
+    <script>
+		// TODO: provide same functionality as the generic parser (e.g. promises)
+        FASTA = Polymer({
+            is: "biojs-io-fasta",
+            ready: function() {
+                //this.textContent = "";
+            },
+            factoryImpl: function(url) {
+                console.log(url);
+            },
+            created: function() {
+                // this.url is not serialized yet, but we have access to the attributes array
+            },
+            attached: function() {
+                console.log(this.localName + '#' + this.id + ' was attached');
+                var nodes = Polymer.dom(this.$.content).getDistributedNodes();
+                if (this.url != null) {
+                    var data = parser.read(this.url);
+					data.then(function(content){
+						this.set("data", content);
+					}.bind(this));
+                }else if (nodes.length === 1) {
+                    var node = nodes[0];
+                    var content = node.textContent;
+					content = content.trim();
+					var res = parser.parse(content);
+                    this.set("data", res);
+                }
+            },
+            detached: function() {
+                console.log(this.localName + '#' + this.id + ' was detached');
+            },
+            attributeChanged: function(name, type) {
+                console.log(this.localName + '#' + this.id + ' attribute ' + name +
+                    ' was changed to ' + this.getAttribute(name));
+            },
+            _urlChanged: function() {
+                console.log("url changed");
+            },
+            properties: {
+                url: {
+                    type: String,
+                    notify: true,
+                    observer: '_urlChanged'
+                },
+                data: {
+                    type: Object,
+                    notify: true,
+                }
+            }
+        });
+    </script>
+
+</dom-module>
